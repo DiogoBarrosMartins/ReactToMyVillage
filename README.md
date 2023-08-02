@@ -1,46 +1,36 @@
-# Getting Started with Create React App
+# Village Simulation Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+Welcome to our Village Simulation Game. This is an online game where you can create an account, choose a tribe, and simulate living in a village.
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+To install and run this project locally on your machine, you will need to follow these steps:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Clone the repository: `git clone <repository_link>`
+2. Navigate into the project directory: `cd village-simulation-game`
+3. Install the required packages: `npm install` or `yarn install`
+4. Start the project: `npm start` or `yarn start`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Features
 
-### `npm test`
+- Account creation: Users can create a new account, choosing between different tribes such as Humans, Orcs, and Elves.
+- Tribe selection: Each tribe has different characteristics, such as balanced stats for Humans, high strength for Orcs, and high intelligence for Elves.
+- [Add other features here]
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies
 
-### `npm run build`
+This project is built with the following technologies:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [React](https://reactjs.org/)
+- [React Router](https://reactrouter.com/)
+- [Add any other technologies/libraries used]
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Contributions
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Contributions, issues, and feature requests are welcome. Feel free to check [issues page](https://github.com/<your_username>/village-simulation-game/issues) if you want to contribute.
 
-### `npm run eject`
+## License
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).

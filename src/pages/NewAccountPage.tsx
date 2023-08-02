@@ -7,7 +7,11 @@ import elfImage from '../images/elf.jpg';
 import humanImage from '../images/human.jpg';
 import orcImage from '../images/orc.jpg';
 
-
+const tribeImages: Record<string, string> = {
+    humans: humanImage,
+    orcs: orcImage,
+    elves: elfImage
+};
 export function NewAccount() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -42,7 +46,7 @@ export function NewAccount() {
                 {['Humans', 'Orcs', 'Elves'].map(t => 
                     <div className="tribe-card" key={t}>
                         <p>{t}</p>
-                        <img src={`images/${t.toLowerCase()}.jpg`} alt={`${t} tribe`} />
+                        <img src={tribeImages[t.toLowerCase()]} alt={`${t} tribe`} />
                         <input type="radio" checked={tribe === t.toLowerCase()} onChange={() => setTribe(t.toLowerCase())} />
                         <label>
                             <p>{tribeDescriptions[t.toLowerCase()]}</p>

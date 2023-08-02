@@ -43,13 +43,10 @@
 }
 
 .tribe-card img {
-    grid-area: image;
-    width: 100px;
-    height: 100px;
+    width: 20vw; /* replace with desired viewport width percentage */
+    height: 20vh; /* replace with desired viewport height percentage */
     object-fit: cover;
 }
-
-
 .tribe-card input[type="radio"] {
     grid-area: radio;
 }
