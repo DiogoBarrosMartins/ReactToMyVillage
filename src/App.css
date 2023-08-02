@@ -1,0 +1,157 @@
+/* App.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+css
+
+
+/* Shared styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+
+.landing-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0; /* Set a background color instead of the image */
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 200px 1fr; /* Sidebar takes 200px, center content takes the remaining width */
+  gap: 20px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #2a2a2a;
+  padding: 20px;
+  color: #fff;
+  height: 100vh; /* Set the height to 100vh to fit the screen */
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Center content takes the full width of the container */
+}
+
+.text-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+}
+
+
+.btn {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 5px 20px; /* Reduce vertical padding to make buttons smaller in height */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  cursor: pointer;
+  width: 100%; /* Set width to 100% to make all buttons the same width */
+}
+
+
+/* ... Remaining styles ... */
+
+
+
+.logo {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.welcome {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.login-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.login-form input {
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.motivational-phrase {
+  font-style: italic;
+  font-size: 1.5rem; /* Update the font size to your preference */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+
+/* For each page */
+
+.new-account-page,
+.login-page,
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.tribe-selection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tribe-selection label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 200px; /* Adjust as per your requirement */
+  margin: 10px; /* Provide some spacing */
+}
+
+.tribe-selection img {
+  width: 100%; /* Make image take full width of the parent label */
+  height: auto; /* Maintain aspect ratio */
+}

@@ -1,0 +1,63 @@
+/* NewAccount.css  */
+
+.new-account-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+}
+
+.new-account-page input[type="text"],
+.new-account-page input[type="password"],
+.new-account-page input[type="email"] {
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid #000;
+    font-size: 1.2em;
+    width: 60%;
+}
+
+
+.tribe-selection {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 20px;
+    align-items: start;
+}
+
+.tribe-card {
+    display: grid;
+    grid-template-areas:
+        "title"
+        "image"
+        "radio"
+        "description";
+    align-items: center;
+    text-align: center;
+}
+
+.tribe-card p {
+    grid-area: title;
+}
+
+.tribe-card img {
+    grid-area: image;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+
+.tribe-card input[type="radio"] {
+    grid-area: radio;
+}
+
+.tribe-card label {
+    grid-area: description;
+}
+.new-account-page button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+}
