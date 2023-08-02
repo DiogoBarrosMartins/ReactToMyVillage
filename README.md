@@ -8,7 +8,7 @@ Welcome to our Village Simulation Game. This is an online game where you can cre
 
 To install and run this project locally on your machine, you will need to follow these steps:
 
-1. Clone the repository: `git clone [<repository_link>](https://github.com/Esparguetes/ReactToMyVillage)`
+1. Clone the repository: `git clone (https://github.com/Esparguetes/ReactToMyVillage)`
 2. Navigate into the project directory: `cd village-simulation-game`
 3. Install the required packages: `npm install` or `yarn install`
 4. Start the project: `npm start` or `yarn start`
