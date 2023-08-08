@@ -42,21 +42,26 @@ export function NewAccount() {
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required />
             <p>Choose your tribe:</p>
-            <div className="tribe-selection">
-                {['Humans', 'Orcs', 'Elves'].map(t => 
-                    <div className="tribe-card" key={t}>
-                        <p>{t}</p>
-                        <img src={tribeImages[t.toLowerCase()]} alt={`${t} tribe`} />
-                        <input type="radio" checked={tribe === t.toLowerCase()} onChange={() => setTribe(t.toLowerCase())} />
-                        <label>
-                            <p>{tribeDescriptions[t.toLowerCase()]}</p>
-                        </label>
-                    </div>
+                <div className="tribe-selection">
+                    {['Humans', 'Orcs', 'Elves'].map(t => 
+                        <div className="tribe-card" key={t}>
+                            <input type="radio" id={`tribe-${t}`} name="tribe" checked={tribe === t.toLowerCase()} onChange={() => setTribe(t.toLowerCase())} />
+                            <label htmlFor={`tribe-${t}`}>
+                                <p>{t}</p>
+                                <img src={tribeImages[t.toLowerCase()]} alt={`${t} tribe`} />
+                                <p>{tribeDescriptions[t.toLowerCase()]}</p>
+                            </label>
+                        </div>
                 )}
             </div>
-            <button type="submit">Create Account</button>
+
+            <div className="button-container">
+                <button type="submit">Create Account</button>
+                <button onClick={() => navigate('/')}>Back to Home</button>
+            </div>
+
         </form>
-        <button onClick={() => navigate('/')} >Back to Home</button>
+      
     </div>)
 
                     }
