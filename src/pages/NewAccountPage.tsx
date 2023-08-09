@@ -39,6 +39,7 @@ export function NewAccount() {
         <h1>Wow create an account, good choice buddy.</h1>
         <form onSubmit={createAccount}>
             <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" required />
+          
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required />
             <p>Choose your tribe:</p>

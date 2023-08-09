@@ -18,26 +18,42 @@ const LandingPage: FC<LandingPageProps> = () => {
     return phraseArray[Math.floor(Math.random() * phraseArray.length)] as string; // Use 'as string' to handle the return type
   };
 
-  // Define the function to handle the form submission (login)
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-// Define the function to get a random phrase from the 'phrases' object
- 
+
     // Get the username and password from the form inputs
     const usernameInput = event.currentTarget.querySelector('#username-input') as HTMLInputElement;
     const passwordInput = event.currentTarget.querySelector('#password-input') as HTMLInputElement;
     const username = usernameInput.value;
     const password = passwordInput.value;
 
-    // Your login logic here (e.g., calling an authentication service)
-    // Example: authService.authenticateUser(username, password)
-    //    .then((player) => {
-    //      // Handle successful login (e.g., store user data in localStorage and redirect)
-    //    })
-    //    .catch((error) => {
-    //      // Handle login error (e.g., show an error message)
-    //    });
-  };
+    // Make an HTTP POST request to the backend's login endpoint
+    try {
+        const response = await fetch('http://localhost:8080/accounts/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (response.ok) {
+            // Handle successful login (e.g., store user data in localStorage and redirect)
+            const data = await response.json();
+            console.log('Login successful:', data);
+            localStorage.setItem('user', JSON.stringify(data));
+            window.location.href = '/village';
+        } else {
+            // Handle login error (e.g., show an error message)
+            const errorData = await response.json();
+            console.error('Login error:', errorData);
+            alert('Login failed. Please check your credentials.');
+        }
+    } catch (error) {
+        console.error('Network error:', error);
+        alert('There was a network error. Please try again.');
+    }
+};
 
   return (
     <div className="landing-page">
