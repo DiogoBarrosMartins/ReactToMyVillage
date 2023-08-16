@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { fetchVillageData } from './villageApi';
 export type VillageData = {
   id: number;
   x: number;
@@ -24,14 +24,31 @@ const VillageDataContext = createContext<VillageDataContextValue | undefined>(un
 
 export const VillageDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [villageData, setVillageData] = useState<VillageData | null>(null);
+ const username = localStorage.getItem('username');
+  
+ useEffect(() => {
+        // This async function fetches the village data and sets it in the state
+       
+        const loadVillageData = async () => {
+            try {
+              if (username) {
+                fetchVillageData(username).then(data => setVillageData(data));
+            }   
+           } catch (error) {
+                console.error("Error fetching village data:", error);
+            }
+        };
 
-  return (
-    <VillageDataContext.Provider value={{ villageData, setVillageData }}>
-      {children}
-    </VillageDataContext.Provider>
-  );
+        loadVillageData();
+        
+    }, []);  // Empty dependency array ensures this runs only once when the component mounts
+
+    return (
+        <VillageDataContext.Provider value={{ villageData, setVillageData }}>
+            {children}
+        </VillageDataContext.Provider>
+    );
 };
-
 export const useVillageData = () => {
   const context = useContext(VillageDataContext);
   if (!context) {

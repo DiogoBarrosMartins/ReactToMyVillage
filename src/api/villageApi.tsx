@@ -1,7 +1,9 @@
-const VILLAGE_ENDPOINT = 'http://localhost:8080/villages/{account.username}/';
 
-export const fetchVillageData = async () => {
+
+export const fetchVillageData = async (username: string) => {
   try {
+    const VILLAGE_ENDPOINT = `http://localhost:8080/villages/${username}/`;
+
     const response = await fetch(VILLAGE_ENDPOINT);
     if (!response.ok) {
       throw new Error('Failed to fetch village data.');

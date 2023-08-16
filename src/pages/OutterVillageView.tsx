@@ -4,7 +4,8 @@ import '../css/VillageOverview.css';
 
 const VillageOverview: React.FC = () => {
     const { villageData } = useVillageData();
-    console.log(villageData + " outtervillage");
+    console.log('Village data in OutterVillageView:', villageData);
+   
 
     if (!villageData) return <div>Loading village details...</div>;
 

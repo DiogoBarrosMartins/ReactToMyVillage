@@ -1,27 +1,28 @@
-// LandingPage.tsx
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import phrases from '../phrases';
-import { VillageData, VillageDataProvider, useVillageData } from '../api/VillageDataContext';  // Add the required imports
-
-import '../css/LandingPage.css'; // Import the custom CSS file
+import { useVillageData } from '../api/VillageDataContext'; 
+import { fetchVillageData } from '../api/villageApi'; 
+import '../css/LandingPage.css';
 
 
 const exampleImage = require('../images/output.jpg');
-// Define the props interface (if needed)
+
 interface LandingPageProps {
-  // Define your props here
+ 
 }
 
 
 const LandingPage: FC<LandingPageProps> = () => {
+    const navigate = useNavigate();
     const {setVillageData } = useVillageData();
-
-  // Define the function to get a random phrase from the 'phrases' object
-    const getRandomPhrase = (): string => { // Provide the correct return type 'string'
+    
+    const getRandomPhrase = (): string => { 
     const phraseArray = Object.values(phrases);
-    return phraseArray[Math.floor(Math.random() * phraseArray.length)] as string; // Use 'as string' to handle the return type
+    return phraseArray[Math.floor(Math.random() * phraseArray.length)] as string; 
   };
+
+
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const usernameInput = event.currentTarget.querySelector('#username-input') as HTMLInputElement;
@@ -41,19 +42,25 @@ const LandingPage: FC<LandingPageProps> = () => {
         const responseData = await response.text();
 
         if (response.ok && responseData === "Authenticated successfully") {
-            // Once authenticated, fetch the village data
-            const villageResponse = await fetch(`http://localhost:8080/villages/${username}/`);
-            console.log(villageResponse);
+         
+          localStorage.setItem('username', username);
+          console.log('Username saved to localStorage:', username);
+          console.log('Fetching village data for:', username);
+
+         
+          const fetchedData = await fetchVillageData(username);
+
+   
       
-            if (villageResponse.ok) {
-              const fetchedData: VillageData = await villageResponse.json();
-                setVillageData(fetchedData); 
-                console.log(VillageDataProvider);
-            
-                window.location.href = '/village';
+            if (fetchedData && fetchedData.id) {
+
+              setVillageData(fetchedData);
+              console.log('Navigating to /village');
+
+            navigate('/village');
             } else {
-                const villageErrorData = await villageResponse.json();
-                console.error('Error fetching village data:', villageErrorData);
+              
+                console.error('Error fetching village data:');
                 alert('Error fetching village data. Please try again later.');
             }
         } else {
@@ -61,10 +68,14 @@ const LandingPage: FC<LandingPageProps> = () => {
             alert('Login failed. Please check your credentials.');
         }
     } catch (error) {
-        console.error('Network error:', error);
+  
+      console.error("Error during login or data fetch:", error);
+      alert("An error occurred. Please try again.");
+      console.error('Network error:', error);
         alert('There was a network error. Please try again.');
     }
 };
+
 
   return (
     <div className="landing-page">
