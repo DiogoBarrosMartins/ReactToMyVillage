@@ -1,6 +1,6 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type VillageData = {
+export type VillageData = {
   id: number;
   x: number;
   y: number;
@@ -14,16 +14,19 @@ type VillageData = {
   // Add more fields as needed
 };
 
-const VillageDataContext = createContext<VillageData | null>(null);
 
-type VillageDataProviderProps = {
-  children: ReactNode;
-  data: VillageData;
+type VillageDataContextValue = {
+  villageData: VillageData | null;
+  setVillageData: React.Dispatch<React.SetStateAction<VillageData | null>>;
 };
 
-export const VillageDataProvider: React.FC<VillageDataProviderProps> = ({ children, data }) => {
+const VillageDataContext = createContext<VillageDataContextValue | undefined>(undefined);
+
+export const VillageDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [villageData, setVillageData] = useState<VillageData | null>(null);
+
   return (
-    <VillageDataContext.Provider value={data}>
+    <VillageDataContext.Provider value={{ villageData, setVillageData }}>
       {children}
     </VillageDataContext.Provider>
   );
@@ -37,4 +40,3 @@ export const useVillageData = () => {
   return context;
 };
 
-export default VillageDataContext;

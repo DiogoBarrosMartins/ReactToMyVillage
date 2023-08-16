@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
-import  VillageDataContext  from '../api/VillageDataContext'; // Update with the correct path
-import '../css/VillageOverview.css'; // Assuming you have a CSS file named VillageOverview.css
+import React from 'react';
+import { useVillageData } from '../api/VillageDataContext'; 
+import '../css/VillageOverview.css'; 
 
 const VillageOverview: React.FC = () => {
-    const villageData = useContext(VillageDataContext);
+    const { villageData } = useVillageData();
+    console.log(villageData + " outtervillage");
 
     if (!villageData) return <div>Loading village details...</div>;
 
@@ -13,7 +14,7 @@ const VillageOverview: React.FC = () => {
                 <h2>Village: {villageData.name}</h2>
                 <p>Coordinates: ({villageData.x}, {villageData.y})</p>
                 <p>Last Updated: {villageData.lastUpdated}</p>
-                {/* Assuming you have an underAttack flag, else you can remove this */}
+                {/*todo*/}
                 <p>{villageData.isUnderAttack ? 'Under Attack!' : 'Safe'}</p>
             </section>
 
@@ -53,7 +54,7 @@ const VillageOverview: React.FC = () => {
                 </ul>
             </section>
 
-            {/* If you have a troops array in the future, you can uncomment this section 
+            {/* When we have a troops array in the future, we can uncomment this section 
             <section className="troops">
                 <h3>Troops</h3>
                 <ul>
