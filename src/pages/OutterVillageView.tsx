@@ -15,22 +15,25 @@ const VillageOverview: React.FC = () => {
                 <h2>Village: {villageData.name}</h2>
                 <p>Coordinates: ({villageData.x}, {villageData.y})</p>
                 <p>Last Updated: {villageData.lastUpdated}</p>
-                {/*todo*/}
-                <p>{villageData.isUnderAttack ? 'Under Attack!' : 'Safe'}</p>
+                <p className={villageData.isUnderAttack ? 'under-attack' : 'safe'}>
+                {villageData.isUnderAttack ? 'Under Attack!' : 'Safe'}
+</p>
+
             </section>
 
             <section className="resources">
                 <h3>Resources</h3>
                 <ul>
-                    {villageData.resourcesDTO.map((resource, index) => (
-                        <li key={index}>
-                            Wood: {resource.wood} |
-                            Wheat: {resource.wheat} |
-                            Stone: {resource.stone} |
-                            Gold: {resource.gold}
-                        </li>
-                    ))}
-                </ul>
+    {villageData.resourcesDTO.map((resource, index) => (
+        <li key={index}>
+            <div><span role="img" aria-label="wood">🌲</span> Wood: {resource.wood}</div>
+            <div><span role="img" aria-label="wheat">🌾</span> Wheat: {resource.wheat}</div>
+            <div><span role="img" aria-label="stone">⛏️</span> Stone: {resource.stone}</div>
+            <div><span role="img" aria-label="gold">💰</span> Gold: {resource.gold}</div>
+        </li>
+    ))}
+</ul>
+
             </section>
 
             <section className="buildings">

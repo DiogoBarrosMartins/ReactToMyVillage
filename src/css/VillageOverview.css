@@ -1,0 +1,45 @@
+/* VillageOverview.css */
+
+.villageOverview {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f4f4f4;  /* Light gray background */
+}
+
+.villageDetails,
+.resources,
+.buildings {
+    flex: 0 0 calc(48% - 10px);  /* Take almost half the width, considering gap */
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #fff;  /* White card background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Shadow for depth */
+}
+
+h2, h3 {
+    font-weight: 600;  /* Bold headers */
+    margin-bottom: 20px;
+}
+
+.resources ul, .buildings ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.resources li, .buildings li {
+    margin-bottom: 15px;
+}
+
+.under-attack {
+    color: red;
+    font-weight: bold;
+}
+
+.safe {
+    color: green;
+    font-weight: bold;
+}
