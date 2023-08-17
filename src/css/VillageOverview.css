@@ -1,45 +1,39 @@
-/* VillageOverview.css */
+body {
+    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+}
 
 .villageOverview {
+    width: 80%;
+    margin: 2% auto;
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
     display: flex;
     flex-wrap: wrap;
+    gap: 20px;
+}
+
+.building {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 20px;
-    background-color: #f4f4f4;  /* Light gray background */
+    margin-bottom: 10px;
 }
 
-.villageDetails,
-.resources,
-.buildings {
-    flex: 0 0 calc(48% - 10px);  /* Take almost half the width, considering gap */
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    background-color: #fff;  /* White card background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Shadow for depth */
+.building-icon {
+    margin-right: 10px;
 }
 
-h2, h3 {
-    font-weight: 600;  /* Bold headers */
-    margin-bottom: 20px;
+.building-button {
+    margin-left: 10px;
 }
-
-.resources ul, .buildings ul {
+.no-bullets {
     list-style-type: none;
     padding-left: 0;
-}
-
-.resources li, .buildings li {
-    margin-bottom: 15px;
-}
-
-.under-attack {
-    color: red;
-    font-weight: bold;
-}
-
-.safe {
-    color: green;
-    font-weight: bold;
 }

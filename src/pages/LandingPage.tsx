@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import phrases from '../phrases';
-import { useVillageData } from '../api/VillageDataContext'; 
-import { fetchVillageData } from '../api/villageApi'; 
 import '../css/LandingPage.css';
 
 
@@ -15,7 +13,6 @@ interface LandingPageProps {
 
 const LandingPage: FC<LandingPageProps> = () => {
     const navigate = useNavigate();
-    const {setVillageData } = useVillageData();
     
     const getRandomPhrase = (): string => { 
     const phraseArray = Object.values(phrases);
@@ -44,25 +41,10 @@ const LandingPage: FC<LandingPageProps> = () => {
         if (response.ok && responseData === "Authenticated successfully") {
          
           localStorage.setItem('username', username);
-          console.log('Username saved to localStorage:', username);
-          console.log('Fetching village data for:', username);
-
-         
-          const fetchedData = await fetchVillageData(username);
-
-   
-      
-            if (fetchedData && fetchedData.id) {
-
-              setVillageData(fetchedData);
-              console.log('Navigating to /village');
+            console.log('Navigating to /village');
 
             navigate('/village');
-            } else {
-              
-                console.error('Error fetching village data:');
-                alert('Error fetching village data. Please try again later.');
-            }
+     
         } else {
             console.error('Login error:', responseData);
             alert('Login failed. Please check your credentials.');

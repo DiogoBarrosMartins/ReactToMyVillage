@@ -14,41 +14,40 @@ export type VillageData = {
   // Add more fields as needed
 };
 
-
 type VillageDataContextValue = {
   villageData: VillageData | null;
   setVillageData: React.Dispatch<React.SetStateAction<VillageData | null>>;
 };
 
+
 const VillageDataContext = createContext<VillageDataContextValue | undefined>(undefined);
 
 export const VillageDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [villageData, setVillageData] = useState<VillageData | null>(null);
- const username = localStorage.getItem('username');
+  const username = localStorage.getItem('username') || '';
   
- useEffect(() => {
-        // This async function fetches the village data and sets it in the state
-       
-        const loadVillageData = async () => {
-            try {
-              if (username) {
-                fetchVillageData(username).then(data => setVillageData(data));
-            }   
-           } catch (error) {
-                console.error("Error fetching village data:", error);
-            }
-        };
+  useEffect(() => {
+    const loadVillageData = async () => {
+      if (username) {
+        try {
+          const data = await fetchVillageData(username);
+          setVillageData(data);
+        } catch (error) {
+          console.error("Error fetching village data:", error);
+        }
+      }
+    };
 
-        loadVillageData();
-        
-    }, []);  // Empty dependency array ensures this runs only once when the component mounts
+    loadVillageData();
+  }, [username]);
 
-    return (
-        <VillageDataContext.Provider value={{ villageData, setVillageData }}>
-            {children}
-        </VillageDataContext.Provider>
-    );
+  return (
+    <VillageDataContext.Provider value={{ villageData, setVillageData }}>
+      {children}
+    </VillageDataContext.Provider>
+  );
 };
+
 export const useVillageData = () => {
   const context = useContext(VillageDataContext);
   if (!context) {
@@ -56,4 +55,3 @@ export const useVillageData = () => {
   }
   return context;
 };
-
