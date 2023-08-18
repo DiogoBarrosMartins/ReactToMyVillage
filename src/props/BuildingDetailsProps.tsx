@@ -1,6 +1,19 @@
+import React, { useState } from 'react';
+
+
+
+export interface QueuedBuilding {
+    id: number;
+    type: string; // Adjust with the correct type if it's an enum or something else
+    endTime: number; // This is in milliseconds since the epoch
+    villageId: number;
+}
+
 interface BuildingDetailsProps {
-    building: any; // Ideally, define a type for this.
+    building: any; // Adjust with the correct type
     onClose: () => void;
+    upgradeQueue: QueuedBuilding[];
+    setUpgradeQueue: React.Dispatch<React.SetStateAction<QueuedBuilding[]>>;
 }
 
 
@@ -18,15 +31,25 @@ const buildingDescriptions: { [key: string]: string } = {
     'SIEGE_WORKSHOP': 'Produces siege weapons.'
 };
 
-const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose }) => {
+const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose, upgradeQueue, setUpgradeQueue }) => {
+
 
     const handleUpgrade = () => {
-        // TODO: Implement the logic to upgrade the building here.
-        // This could be an API call, a state update, etc.
+        const buildingWithTimer = {
+            ...building,
+            startTime: Date.now(),
+            endTime: Date.now() + building.timeToUpgrade * 60 * 1000
+        };
+    
+        // Add the building to the upgrade queue
+        setUpgradeQueue(prevQueue => [...prevQueue, buildingWithTimer]);
+        
+        // Close the Building Details modal after initiating the upgrade
+        onClose();
         console.log(`Upgrading building with ID: ${building.id}`);
     };
     return (
-    // Inside BuildingDetails component:
+
 <div style={{
     zIndex: 10,
     position: 'absolute',
@@ -73,7 +96,8 @@ const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose }) 
 </ul>
 
     <button onClick={onClose}>Close</button>
-    <button onClick={handleUpgrade}>Upgrade</button>
+    <button onClick={handleUpgrade}>Start Upgrade</button>
+
 </div>
 
     );

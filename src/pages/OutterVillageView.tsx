@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useVillageData } from '../api/VillageDataContext';
 import { updateVillageNameApi } from '../api/villageApi';
 import '../css/VillageOverview.css'
 import BuildingDetails from '../props/BuildingDetailsProps';
+import { QueuedBuilding } from '../props/BuildingDetailsProps';
+
 const OutterVillageView: React.FC = () => {
 	
+    const [upgradeQueue, setUpgradeQueue] = useState<QueuedBuilding[]>([]);
+
     const { villageData } = useVillageData();
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(villageData?.name || '');
 	const [showBuildingDetails, setShowBuildingDetails] = useState(false);
     const [selectedBuilding, setSelectedBuilding] = useState(null);
-console.log(villageData);
+    console.log(villageData);
     const buildingIcons: { [key: string]: string } = {
         'FARM': '🌾',
         'QUARRY': '⛏️',
@@ -23,7 +27,38 @@ console.log(villageData);
         'RESEARCH_CENTER': '🔍',
         'STABLE': '🐎',
         'SIEGE_WORKSHOP': '🔥'
-    };
+};
+
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = Date.now();
+            const completedUpgrades = upgradeQueue.filter(b => b.endTime <= now);
+    
+            completedUpgrades.forEach(building => {
+                // Make the API call to upgrade the building
+                fetch(`/api/${building.villageId }/buildings/${building.id}/upgrade`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Building upgraded:", data);
+                    // TODO: Handle the updated building data as needed
+                })
+                .catch(error => {
+                    console.error("Error upgrading building:", error);
+                });
+            });
+    
+            // Remove completed upgrades from the queue
+            const updatedQueue = upgradeQueue.filter(b => b.endTime > now);
+            setUpgradeQueue(updatedQueue);
+        }, 1000); // Check every second
+    
+        return () => clearInterval(interval);
+    }, [upgradeQueue]);
+    
 
     const handleNameChange = async () => {
         if (newName !== villageData?.name) {
@@ -54,13 +89,19 @@ console.log(villageData);
     interface VillageDetailsProps {
         isEditing: boolean;
         setIsEditing: (value: boolean) => void;
-        villageData: any; // Replace 'any' with the appropriate type when available
+        villageData: any; 
         newName: string;
         setNewName: (name: string) => void;
         handleNameChange: () => void;
     }
 
     const VillageDetailsSection: React.FC<VillageDetailsProps> = ({ isEditing, setIsEditing, villageData, newName, setNewName, handleNameChange }) => {
+        const getFormattedTime = (milliseconds: number) => {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}:${seconds.toString().padStart(2, '0')} left`;
+        };
         return (
             <div className="card">
                 <section className="villageDetails">
@@ -86,13 +127,23 @@ console.log(villageData);
                     <p>Coordinates: ({villageData?.x}, {villageData?.y})</p>
                     <p>Last Updated: {villageData?.lastUpdated}</p>
                     <p>{villageData?.isUnderAttack ? 'Under Attack!' : 'Safe'}</p>
+
+                    <div>
+    {upgradeQueue.map(queuedBuilding => (
+        <div key={queuedBuilding.id}>
+            {queuedBuilding.type} upgrading... {getFormattedTime(queuedBuilding.endTime - Date.now())}
+
+        </div>
+    ))}
+</div>
+
                 </section>
             </div>
         );
     };
 
     interface ResourceProps {
-        resourcesDTO: any[]; // Replace 'any' with the appropriate type when available
+        resourcesDTO: any[];
     }
 
     const ResourceSection: React.FC<ResourceProps> = ({ resourcesDTO }) => {
@@ -101,7 +152,7 @@ console.log(villageData);
                 <section className="resources">
                     <h3>Resources</h3>
 					<ul className="no-bullets">
-                        {resourcesDTO.map((resource: any, index: number) => ( // Replace 'any' with the appropriate type when available
+                        {resourcesDTO.map((resource: any, index: number) => (
                             <li key={index}>
                                 Wood: {resource.wood} | Wheat: {resource.wheat} | Stone: {resource.stone} | Gold: {resource.gold}
                             </li>
@@ -113,12 +164,13 @@ console.log(villageData);
     };
 
     interface BuildingProps {
-        buildings: any[]; // Replace 'any' with the appropriate type when available
+        buildings: any[]; 
         title: string;
     }
 
     
 const BuildingSection: React.FC<BuildingProps> = ({ buildings, title }) => {
+    
     return (
         <div className="card">
             <section className="buildings">
@@ -152,7 +204,7 @@ const BuildingSection: React.FC<BuildingProps> = ({ buildings, title }) => {
             <BuildingSection buildings={villageData?.resourceBuildings || []} title="Resource Buildings" />
             <BuildingSection buildings={villageData?.nonResourceBuildings || []} title="Non-Resource Buildings" /> {
                 showBuildingDetails && selectedBuilding &&
-                <BuildingDetails building={selectedBuilding} onClose={handleCloseBuildingDetails} />
+                <BuildingDetails building={selectedBuilding} onClose={handleCloseBuildingDetails} setUpgradeQueue={setUpgradeQueue}   upgradeQueue={upgradeQueue}  />
             }
           
 	   
