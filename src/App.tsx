@@ -10,7 +10,7 @@ import './App.css';
 import VillageOverview from './pages/OutterVillageView';
 
 const App: React.FC = () => {
- 
+    console.log("App rendered");
 
   
     return (
