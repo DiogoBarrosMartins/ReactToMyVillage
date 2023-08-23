@@ -9,6 +9,7 @@ try {
     throw new Error('Failed to fetch village data.');
   }
   const data = await response.json();
+  console.log(data);
   return data;
 } catch (error) {
   console.error("Error fetching village data:", error);
@@ -54,3 +55,23 @@ return true;
 
   }
 };
+
+export const upgradeBuildingApi = async (buildingId: number) => {
+  const BASE_URL = "http://localhost:8080/";  // Define BASE_URL or replace with the correct endpoint
+ let username = localStorage.getItem("username");
+  const response = await fetch(`${BASE_URL}${username}/buildings/${buildingId}/upgrade`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+      }
+  });
+
+  // Define or import handleResponse function or replace it with the correct logic
+  // For now, let's assume the response is JSON and we're returning the parsed data
+  if (!response.ok) {
+      throw new Error('Failed to upgrade building.');
+  }
+  return await response.json();
+};
+
+

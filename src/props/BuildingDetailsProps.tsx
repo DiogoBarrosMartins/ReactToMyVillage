@@ -1,6 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { upgradeBuildingApi } from '../api/villageApi';  // Adjust the path as necessary.
 
-
+interface Building {
+    // properties for the Building type...
+    id: number;
+    resourcesNeeded: number[];
+    name: string;
+    level: number;
+    nextLevelProductionRate: number;
+    productionRate: number;
+type: string;
+ownerUsername: number;
+    // ... other properties ...
+}
 
 export interface QueuedBuilding {
 id: number;
@@ -10,11 +22,13 @@ villageId: number;
 }
 
 interface BuildingDetailsProps {
-building: any; // Adjust with the correct type
-onClose: () => void;
-upgradeQueue: QueuedBuilding[];
-setUpgradeQueue: React.Dispatch<React.SetStateAction<QueuedBuilding[]>>;
+    building: Building;  // Assuming there's a type named Building
+    onClose: () => void;
+    setUpgradeQueue: React.Dispatch<React.SetStateAction<QueuedBuilding[]>>;
+    upgradeQueue: any[];  // Adjust the type if it's different
+    onUpgradeSuccess?: () => void;  // Adding the new property
 }
+
 
 
 const buildingDescriptions: { [key: string]: string } = {
@@ -31,23 +45,29 @@ const buildingDescriptions: { [key: string]: string } = {
 'SIEGE_WORKSHOP': 'Produces siege weapons.'
 };
 
-const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose, upgradeQueue, setUpgradeQueue }) => {
+const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose,  setUpgradeQueue, upgradeQueue, onUpgradeSuccess }) => {
 
+    const handleBuildingUpgrade = async () => {
+        
+        try {
+           
+             // Assuming this is the villageId, adjust if necessary
+            const buildingId = building.id;
+            await upgradeBuildingApi( buildingId);
 
-const handleUpgrade = () => {
-    const buildingWithTimer = {
-        ...building,
-        startTime: Date.now(),
-        endTime: Date.now() + building.timeToUpgrade * 60 * 1000
+        
+            // Provide feedback to the user
+            alert('Building upgrade initiated successfully!');
+            onUpgradeSuccess && onUpgradeSuccess();  // Notify the p
+        } catch (error) {
+            let errorMessage = 'An unexpected error occurred.';
+            if (error instanceof Error) {  // Type check
+                errorMessage = error.message;
+            }
+            alert(`Failed to upgrade building: ${errorMessage}`);
+        }
     };
 
-    // Add the building to the upgrade queue
-    setUpgradeQueue(prevQueue => [...prevQueue, buildingWithTimer]);
-    
-    // Close the Building Details modal after initiating the upgrade
-    onClose();
-    console.log(`Upgrading building with ID: ${building.id}`);
-};
 return (
 
 <div style={{
@@ -96,7 +116,8 @@ border: '1px solid black'
 </ul>
 
 <button onClick={onClose}>Close</button>
-<button onClick={handleUpgrade}>Start Upgrade</button>
+<button onClick={handleBuildingUpgrade}>Upgrade</button>
+
 
 </div>
 
