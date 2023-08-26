@@ -58,6 +58,7 @@ const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose,  s
         
             // Provide feedback to the user
             alert('Building upgrade initiated successfully!');
+            window.location.reload();
             onUpgradeSuccess && onUpgradeSuccess();  // Notify the p
         } catch (error) {
             let errorMessage = 'An unexpected error occurred.';

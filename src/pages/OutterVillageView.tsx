@@ -1,10 +1,10 @@
-import React, { useState, useCallback  } from 'react';
+import React, { useState, useEffect, useCallback  } from 'react';
 import { useVillageData } from '../api/VillageDataContext';
 import { updateVillageNameApi } from '../api/villageApi';
 import '../css/VillageOverview.css'
 import BuildingDetails from '../props/BuildingDetailsProps';
 import { QueuedBuilding } from '../props/BuildingDetailsProps';
-import { upgradeBuildingApi } from '../api/villageApi';
+
 
 const OutterVillageView: React.FC = () => {
 const [upgradeQueue, setUpgradeQueue] = useState<QueuedBuilding[]>([]);
@@ -16,6 +16,8 @@ const [isEditing, setIsEditing] = useState(false);
 const [newName, setNewName] = useState(villageData?.name || '');
 const [showBuildingDetails, setShowBuildingDetails] = useState(false);
 const [selectedBuilding, setSelectedBuilding] = useState(null);
+
+const [timers, setTimers] = useState<{ [buildingId: number]: string }>({});
 
 const buildingIcons: { [key: string]: string } = {
 'FARM': '🌾',
@@ -31,6 +33,38 @@ const buildingIcons: { [key: string]: string } = {
 'SIEGE_WORKSHOP': '🔥'
 };
 
+const handleLogout = () => {
+    // Remove the object from local storage
+    localStorage.removeItem('username');  // Replace 'yourObjectName' with the actual key name you used to store the object
+    
+    // Navigate to the landing page
+    window.location.href = '/';  // Assuming '/' is your landing page route or you can use the exact URL of your landing page.
+};
+
+useEffect(() => {
+    const interval = setInterval(() => {
+        const newTimers: { [buildingId: number]: string } = {};
+
+        villageData?.constructionDTOS.forEach((construction: { endsAt:  Date; buildingId: number; }) => {   // <-- 2. Access the constructionDTOS from the context
+            const endTime = new Date(construction.endsAt).getTime();
+            const now = new Date().getTime();
+            const distance = endTime - now;
+
+            // Calculate the remaining time
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            newTimers[construction.buildingId] = `${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                newTimers[construction.buildingId] = 'EXPIRED';
+            }
+        });
+
+        setTimers(newTimers);
+    }, 1000);
+
+    return () => clearInterval(interval);  // This will clear the interval when the component is unmounted.
+}, [villageData?.constructionDTOS]);
 
 
 const handleNameChange = useCallback(async () => {
@@ -45,7 +79,7 @@ setIsEditing(false);
 } else {
 setIsEditing(false);
 }
-}, []);
+}, [newName, villageData?.name]);
 
 
 const handleViewBuilding = (building: any) => {
@@ -68,13 +102,7 @@ handleNameChange: () => void;
 }
 
 const VillageDetailsSection: React.FC<VillageDetailsProps> = ({ isEditing, setIsEditing, villageData, newName, setNewName, handleNameChange }) => {
-const getFormattedTime = (milliseconds: number) => {
-const totalSeconds = Math.floor(milliseconds / 1000);
-const minutes = Math.floor(totalSeconds / 60);
-const seconds = totalSeconds % 60;
 
-return `${minutes}:${seconds.toString().padStart(2, '0')} left`;
-};
 return (
 <div className="card">
 <section className="villageDetails">
@@ -100,15 +128,15 @@ Village:
 <p>Coordinates: ({villageData?.x}, {villageData?.y})</p>
 <p>Last Updated: {villageData?.lastUpdated}</p>
 <p>{villageData?.isUnderAttack ? 'Under Attack!' : 'Safe'}</p>
+<button onClick={handleLogout}>Logout</button>
+<div className="construction-timers">
+                {villageData?.constructionDTOS.map((construction: { buildingId:number   }) => (
+                    <div key={construction.buildingId}>
+                        Building {construction.buildingId}: {timers[construction.buildingId]}
+                    </div>
+                ))}
+            </div>
 
-<div>
-{upgradeQueue.map(queuedBuilding => (
-<div key={queuedBuilding.id}>|
-{queuedBuilding.type} upgrading... {getFormattedTime(queuedBuilding.endTime - Date.now())}
-
-</div>
-))}
-</div>
 
 </section>
 </div>
@@ -116,25 +144,45 @@ Village:
 };
 
 interface ResourceProps {
-resourcesDTO: any[];
+    resourcesDTO: any[];
+    buildings: any[];
 }
 
-const ResourceSection: React.FC<ResourceProps> = ({ resourcesDTO }) => {
-return (
-<div className="card">
-<section className="resources">
-<h3>Resources</h3>
-<ul className="no-bullets">
-{resourcesDTO.map((resource: any, index: number) => (
-    <li key={index}>
-        Wood: {resource.wood} | Wheat: {resource.wheat} | Stone: {resource.stone} | Gold: {resource.gold}
-    </li>
-))}
-</ul>
-</section>
-</div>
-);
+const ResourceSection: React.FC<ResourceProps> = ({ resourcesDTO, buildings }) => {
+    // Calculate the total production per minute for each resource
+    let woodProduction = 0;
+    let wheatProduction = 0;
+    let stoneProduction = 0;
+    let goldProduction = 0;
+    
+
+    buildings.forEach(building => {
+        if (building.type === 'FOREST') woodProduction += building.productionRate;
+        if (building.type === 'FARM') wheatProduction += building.productionRate;
+        if (building.type === 'QUARRY') stoneProduction += building.productionRate;
+        if (building.type === 'MINE') goldProduction += building.productionRate;
+    });
+
+    return (
+        <div className="card">
+            <section className="resources">
+                <h3>Resources</h3>
+                <ul className="no-bullets">
+                    {resourcesDTO.map((resource: any, index: number) => (
+                        <li key={index}>
+                            Wood: {resource.wood} ({woodProduction}) |
+                            Wheat: {resource.wheat} ({wheatProduction}) |
+                            Stone: {resource.stone} ({stoneProduction}) |
+                            Gold: {resource.gold} ({goldProduction})
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        </div>
+    );
 };
+
+
 
 interface BuildingProps {
 buildings: any[]; 
@@ -173,7 +221,7 @@ newName={newName}
 setNewName={setNewName}
 handleNameChange={handleNameChange}
 />
-<ResourceSection resourcesDTO={villageData?.resourcesDTO || []} />
+<ResourceSection resourcesDTO={villageData?.resourcesDTO || []} buildings={villageData?.resourceBuildings || []} />
 <BuildingSection buildings={villageData?.resourceBuildings || []} title="Resource Buildings" />
 <BuildingSection buildings={villageData?.nonResourceBuildings || []} title="Non-Resource Buildings" /> 
 {showBuildingDetails && selectedBuilding && (

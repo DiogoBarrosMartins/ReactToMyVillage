@@ -66,8 +66,6 @@ export const upgradeBuildingApi = async (buildingId: number) => {
       }
   });
 
-  // Define or import handleResponse function or replace it with the correct logic
-  // For now, let's assume the response is JSON and we're returning the parsed data
   if (!response.ok) {
       throw new Error('Failed to upgrade building.');
   }

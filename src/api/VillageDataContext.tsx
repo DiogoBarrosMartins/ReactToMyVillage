@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext , useContext } from 'react';
+import React, { useState, useEffect , useContext } from 'react';
 import { fetchVillageData } from './villageApi';  // Assuming the path is correct
 
 
@@ -15,7 +15,7 @@ export const useVillageData = () => {
 export const VillageDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [villageData, setVillageData] = useState<any | null>(null);
 
-  const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
     
     useEffect(() => {
         const username = localStorage.getItem('username');
