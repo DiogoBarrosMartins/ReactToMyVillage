@@ -9,8 +9,8 @@ interface Building {
     level: number;
     nextLevelProductionRate: number;
     productionRate: number;
-type: string;
-ownerUsername: number;
+    type: string;
+    ownerUsername: number;
     // ... other properties ...
 }
 
@@ -27,6 +27,7 @@ interface BuildingDetailsProps {
     setUpgradeQueue: React.Dispatch<React.SetStateAction<QueuedBuilding[]>>;
     upgradeQueue: any[];  // Adjust the type if it's different
     onUpgradeSuccess?: () => void;  // Adding the new property
+    constructions: any[];
 }
 
 
@@ -45,8 +46,12 @@ const buildingDescriptions: { [key: string]: string } = {
 'SIEGE_WORKSHOP': 'Produces siege weapons.'
 };
 
-const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose,  setUpgradeQueue, upgradeQueue, onUpgradeSuccess }) => {
-
+const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose,  setUpgradeQueue, upgradeQueue, onUpgradeSuccess, constructions }) => {
+    
+    const isBuildingUpgrading = (): boolean => {
+        return constructions.some((construction: any) => construction.buildingId === building.id);
+    };
+    
     const handleBuildingUpgrade = async () => {
         
         try {
@@ -54,10 +59,6 @@ const BuildingDetails: React.FC<BuildingDetailsProps> = ({ building, onClose,  s
              // Assuming this is the villageId, adjust if necessary
             const buildingId = building.id;
             await upgradeBuildingApi( buildingId);
-
-        
-            // Provide feedback to the user
-            alert('Building upgrade initiated successfully!');
             window.location.reload();
             onUpgradeSuccess && onUpgradeSuccess();  // Notify the p
         } catch (error) {
@@ -117,8 +118,11 @@ border: '1px solid black'
 </ul>
 
 <button onClick={onClose}>Close</button>
-<button onClick={handleBuildingUpgrade}>Upgrade</button>
-
+<button 
+    onClick={handleBuildingUpgrade}
+    disabled={isBuildingUpgrading()}>
+        {isBuildingUpgrading() ? "Already Upgrading" : "Upgrade"}
+</button>
 
 </div>
 

@@ -1,0 +1,17 @@
+.map-grid {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.player-village {
+    background-color: lightblue;
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}

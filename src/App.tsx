@@ -8,6 +8,7 @@ import { VillageDataProvider } from './api/VillageDataContext';
 
 import './App.css';
 import VillageOverview from './pages/OutterVillageView';
+import MapView from './pages/MapView';
 
 const App: React.FC = () => {
     console.log("App rendered");
@@ -23,6 +24,7 @@ const App: React.FC = () => {
                     <Route path="/rules" element={<Rules />} />
                     <Route path="/leaderboard" element={<Leaderboard />} />
                     <Route path="/village" element={<VillageOverview />} />
+                    <Route path="/map" element={<MapView />} />
                 </Routes>     </VillageDataProvider>
             </div>
         </Router>
