@@ -12,20 +12,20 @@ import MapView from './pages/MapView';
 
 const App: React.FC = () => {
     console.log("App rendered");
-
-  
+    
     return (
         <Router>
             <div className="App">
-            <VillageDataProvider>
-                   <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route path="/create-account" element={<NewAccountPage />} />
-                    <Route path="/rules" element={<Rules />} />
-                    <Route path="/leaderboard" element={<Leaderboard />} />
-                    <Route path="/village" element={<VillageOverview />} />
-                    <Route path="/map" element={<MapView />} />
-                </Routes>     </VillageDataProvider>
+                <VillageDataProvider>
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/create-account" element={<NewAccountPage />} />
+                        <Route path="/rules" element={<Rules />} />
+                        <Route path="/leaderboard" element={<Leaderboard />} />
+                        <Route path="/village" element={<VillageOverview />} />
+                        <Route path="/map" element={<MapView />} />
+                    </Routes>     
+                </VillageDataProvider>
             </div>
         </Router>
     );

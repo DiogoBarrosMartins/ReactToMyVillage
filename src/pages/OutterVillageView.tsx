@@ -7,6 +7,7 @@ import { QueuedBuilding } from '../props/BuildingDetailsProps';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const OutterVillageView: React.FC = () => {
 const [upgradeQueue, setUpgradeQueue] = useState<QueuedBuilding[]>([]);
 
@@ -23,6 +24,48 @@ const [showBuildingDetails, setShowBuildingDetails] = useState(false);
 const [selectedBuilding, setSelectedBuilding] = useState(null);
 
 const [timers, setTimers] = useState<{ [buildingId: number]: string }>({});
+
+
+const [nextTroopEndTime, setNextTroopEndTime] = useState<Date | null>(null);
+const [timeRemainingForTroop, setTimeRemainingForTroop] = useState<string>("");
+
+
+const computeTimeDifference = (endTime: Date) => {
+    const now = new Date();
+    const diffMs = endTime.getTime() - now.getTime();
+    const diffHrs = Math.floor(diffMs / (3600 * 1000));
+    const diffMins = Math.floor((diffMs % (3600 * 1000)) / (60 * 1000));
+    const diffSecs = Math.floor((diffMs % (60 * 1000)) / 1000);
+    return `${String(diffHrs).padStart(2, '0')}:${String(diffMins).padStart(2, '0')}:${String(diffSecs).padStart(2, '0')}`;
+};
+
+
+useEffect(() => {
+    // Update the next troop's end time when villageData changes
+    if (villageData?.troopTrainingQueueDTOS) {
+        const sortedQueue = [...villageData.troopTrainingQueueDTOS].sort((a, b) => new Date(a.trainingEndTime).getTime() - new Date(b.trainingEndTime).getTime());
+        setNextTroopEndTime(new Date(sortedQueue[0].trainingEndTime));
+    }
+}, [villageData]);
+
+useEffect(() => {
+    if (nextTroopEndTime) {
+        const interval = setInterval(() => {
+            setTimeRemainingForTroop(computeTimeDifference(nextTroopEndTime));
+
+            if (new Date() >= nextTroopEndTime) {
+                clearInterval(interval);
+                setNextTroopEndTime(null);
+
+                // Trigger a refresh
+            window.location.reload();
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);  // Cleanup
+    }
+}, [nextTroopEndTime]);
+
 
 const buildingIcons: { [key: string]: string } = {
 'FARM': '🌾',
@@ -179,7 +222,7 @@ buildings.forEach(building => {
 return (
     <div className="card">
         <section className="resources">
-            <h3>Resources</h3>
+            <h3>Resources 💎</h3>
             <ul className="no-bullets">
                 {resourcesDTO.map((resource: any, index: number) => (
                     <li key={index}>
@@ -232,6 +275,7 @@ return (
     </div>
 );
 }
+const troopQueueLength = villageData?.troopTrainingQueueDTOS?.length || 0;
 
 return (
 <div className="villageOverview">
@@ -244,9 +288,9 @@ setNewName={setNewName}
 handleNameChange={handleNameChange}
 />
 <ResourceSection resourcesDTO={villageData?.resourcesDTO || []} buildings={villageData?.resourceBuildings || []} />
-<BuildingSection buildings={villageData?.resourceBuildings || []} title="Resource Buildings" constructions={villageData?.constructionDTOS || []} />
+<BuildingSection buildings={villageData?.resourceBuildings || []} title="Resource Buildings 🏠" constructions={villageData?.constructionDTOS || []} />
 
-<BuildingSection buildings={villageData?.nonResourceBuildings || []} title="Non-Resource Buildings"  constructions={villageData?.constructionDTOS || []}/> 
+<BuildingSection buildings={villageData?.nonResourceBuildings || []} title="Non-Resource Buildings 🏢 🏠"  constructions={villageData?.constructionDTOS || []}/> 
 {showBuildingDetails && selectedBuilding && (
 <BuildingDetails 
 building={selectedBuilding}
@@ -260,6 +304,25 @@ setUpgradeQueue={setUpgradeQueue}
 upgradeQueue={upgradeQueue}
 />
 )}
+
+
+<div className="troop-card">
+                <h3>Training Queue 🏹</h3>
+                {nextTroopEndTime && (
+                    <div>
+                        <p>Training: {villageData?.troopTrainingQueueDTOS[0].troopTypeName}  ({troopQueueLength})</p>
+                        <p>Time Remaining: {timeRemainingForTroop}</p>
+                    </div>
+                )}
+                <h3>Available Troops 🪖</h3>
+                <ul>
+                    {villageData?.villageTroopDTOS.map((troop: any) => (
+                        <li key={troop.id}>
+                            {troop.troopTypeName} - Quantity: {troop.quantity}
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
 </div>
 );
