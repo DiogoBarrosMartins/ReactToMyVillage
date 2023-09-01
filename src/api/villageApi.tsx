@@ -96,4 +96,22 @@ export const fetchSurroundingVillages = async (x: number, y: number): Promise<an
 };
 
 
-
+export const trainTroops = async (villageId: string, troopType: string, quantity: number) => {
+    
+  const response = await fetch(`http://localhost:8080/villages/${villageId}/troops/train`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          troopType,
+          quantity
+      })
+  });
+  
+  if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  
+  return response.json();
+};

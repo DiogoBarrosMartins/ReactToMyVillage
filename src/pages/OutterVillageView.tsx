@@ -44,9 +44,15 @@ useEffect(() => {
     // Update the next troop's end time when villageData changes
     if (villageData?.troopTrainingQueueDTOS) {
         const sortedQueue = [...villageData.troopTrainingQueueDTOS].sort((a, b) => new Date(a.trainingEndTime).getTime() - new Date(b.trainingEndTime).getTime());
-        setNextTroopEndTime(new Date(sortedQueue[0].trainingEndTime));
+
+        if (sortedQueue.length > 0) {  // Check if the array has elements
+            setNextTroopEndTime(new Date(sortedQueue[0].trainingEndTime));
+        } else {
+            setNextTroopEndTime(null);  // Or some other default value
+        }
     }
 }, [villageData]);
+
 
 useEffect(() => {
     if (nextTroopEndTime) {
