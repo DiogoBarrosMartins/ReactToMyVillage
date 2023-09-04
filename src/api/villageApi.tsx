@@ -115,3 +115,36 @@ export const trainTroops = async (villageId: string, troopType: string, quantity
   
   return response.json();
 };
+
+export interface TroopTypeDTO {
+    name: string;
+    health: number;
+    armor: number;
+    attack: number;
+    carryCapacity: number;
+    trainingTime: number;
+    resourcesRequired: Record<string, number>;
+    description: string;
+  }
+  
+
+export const fetchAllTroopTypes = async (): Promise<TroopTypeDTO[]> => {
+    try {
+      const response = await fetch('http://localhost:8080/villages/1/troops/list', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch troop types. Status: ${response.status}`);
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error('API call to fetch troop types failed:', error);
+      throw error;
+    }
+  };
+  

@@ -299,16 +299,15 @@ handleNameChange={handleNameChange}
 <BuildingSection buildings={villageData?.nonResourceBuildings || []} title="Non-Resource Buildings 🏢 🏠"  constructions={villageData?.constructionDTOS || []}/> 
 {showBuildingDetails && selectedBuilding && (
 <BuildingDetails 
-building={selectedBuilding}
-constructions={villageData?.constructionDTOS || []}
+                building={selectedBuilding}
+                constructions={villageData?.constructionDTOS || []}
 
-onClose={handleCloseBuildingDetails}
-onUpgradeSuccess={() => {
-    //additional logic when upgrade is sucessful
-}}
-setUpgradeQueue={setUpgradeQueue}
-upgradeQueue={upgradeQueue}
-/>
+                onClose={handleCloseBuildingDetails}
+                onUpgradeSuccess={() => {
+                    //additional logic when upgrade is sucessful
+                } }
+                setUpgradeQueue={setUpgradeQueue}
+                upgradeQueue={upgradeQueue} troopTypes={[]}/>
 )}
 
 
