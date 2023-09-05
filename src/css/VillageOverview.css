@@ -1,91 +1,91 @@
 :root {
-  
-    --border-radius: 6px;
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --spacing-small: 5px;
-    --spacing-medium: 10px;
-    --spacing-large: 15px;
+
+--border-radius: 6px;
+--box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+--spacing-small: 5px;
+--spacing-medium: 10px;
+--spacing-large: 15px;
 }
 
 body {
-    background-color: var(--primary-bg-color);
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+background-color: var(--primary-bg-color);
+font-family: 'Arial', sans-serif;
+margin: 0;
+padding: 0;
+overflow-x: hidden;
 }
 
 .villageOverview {
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;  
-    overflow-x: auto;
-    background-color: var(--primary-bg-color);
-    gap: var(--spacing-medium);
-    padding: var(--spacing-medium);
+width: 100vw;
+height: 100vh;
+margin: 0;
+display: flex;
+flex-direction: row;
+align-items: stretch;  
+overflow-x: auto;
+background-color: var(--primary-bg-color);
+gap: var(--spacing-medium);
+padding: var(--spacing-medium);
 }
 
 .card, .troop-card {
-    background-color: var(--secondary-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    margin: 0;
-    padding: var(--spacing-medium);
-    flex: 1;  /* Allow the cards to grow and occupy available space */
-    color: var(--primary-color);
+background-color: var(--secondary-bg-color);
+border-radius: var(--border-radius);
+box-shadow: var(--box-shadow);
+margin: 0;
+padding: var(--spacing-medium);
+flex: 1;  /* Allow the cards to grow and occupy available space */
+color: var(--primary-color);
 }
 
 .building {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--spacing-small);
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: var(--spacing-small);
 }
 
 .building-icon {
-    margin-right: var(--spacing-small);
-    font-size: 1.2em;  
+margin-right: var(--spacing-small);
+font-size: 1.2em;  
 }
 
 .building-button {
-    margin-left: var(--spacing-small);
+margin-left: var(--spacing-small);
 }
 
 .no-bullets {
-    list-style-type: none;
-    padding-left: 0;
+list-style-type: none;
+padding-left: 0;
 }
 
 .troop-card {
-    border: 1px solid var(--primary-color);
-    transition: all 0.3s ease-in-out;
+border: 1px solid var(--primary-color);
+transition: all 0.3s ease-in-out;
 }
 
 .troop-card h3 {
-    border-bottom: 1px solid var(--primary-color);
-    padding-bottom: var(--spacing-small);
-    margin-bottom: var(--spacing-small);
-    font-size: 1.4em;
-    color: var(--primary-color);
+border-bottom: 1px solid var(--primary-color);
+padding-bottom: var(--spacing-small);
+margin-bottom: var(--spacing-small);
+font-size: 1.4em;
+color: var(--primary-color);
 }
 
 .troop-card ul {
-    list-style-type: none;
-    padding-left: 0;
+list-style-type: none;
+padding-left: 0;
 }
 
 .troop-card li {
-    padding: var(--spacing-small);
-    border-radius: 4px;
-    margin: var(--spacing-small) 0;
-    background-color: var(--primary-bg-color);
-    color: var(--primary-color);
+padding: var(--spacing-small);
+border-radius: 4px;
+margin: var(--spacing-small) 0;
+background-color: var(--primary-bg-color);
+color: var(--primary-color);
 }
 
 .troop-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+transform: scale(1.02);
+box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }

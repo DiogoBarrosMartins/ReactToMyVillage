@@ -2,93 +2,93 @@
 
 /* Base styles */
 .new-account-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 20px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100%;
+padding: 20px;
 }
 
 .button-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* space between the buttons */
-    margin-top: 20px;
+display: flex;
+justify-content: center;
+gap: 10px; /* space between the buttons */
+margin-top: 20px;
 }
 .new-account-page h1 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+font-size: 24px;
+font-weight: bold;
+margin-bottom: 20px;
 }
 
 .new-account-page input[type="text"],
 .new-account-page input[type="password"],
 .new-account-page input[type="email"] {
-    margin: 15px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    max-width: 400px;
-    font-size: 16px;
+margin: 15px 0;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 4px;
+width: 100%;
+max-width: 400px;
+font-size: 16px;
 }
 
 .tribe-selection {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 20px;
-    width: 100%;
-    max-width: 800px;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+gap: 20px;
+margin-top: 20px;
+width: 100%;
+max-width: 800px;
 }
 
 .tribe-card {
-    flex: 1 1 calc(33.33% - 20px); /* three cards with gap */
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: background-color 0.3s;
+flex: 1 1 calc(33.33% - 20px); /* three cards with gap */
+padding: 15px;
+border: 1px solid #ccc;
+border-radius: 8px;
+transition: background-color 0.3s;
 }
 
 .tribe-card:hover {
-    background-color: #f9f9f9;
+background-color: #f9f9f9;
 }
 
 .tribe-card img {
-    width: 100%;
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 15px;
+width: 100%;
+max-width: 150px;
+height: auto;
+margin-bottom: 15px;
 }
 
 .tribe-card p {
-    margin-bottom: 10px;
+margin-bottom: 10px;
 }
 
 .tribe-card input[type="radio"] {
-    display: none;
+display: none;
 }
 
 .tribe-card input[type="radio"]:checked + label {
-    border: 2px solid #007bff;
-    padding: 15px;
-    border-radius: 8px;
+border: 2px solid #007bff;
+padding: 15px;
+border-radius: 8px;
 }
 
 .new-account-page button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
+padding: 10px 20px;
+font-size: 16px;
+background-color: #007bff;
+color: #fff;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+transition: background-color 0.3s;
+margin-top: 20px;
 }
 
 .new-account-page button:hover {
-    background-color: #0056b3;
+background-color: #0056b3;
 }

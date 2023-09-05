@@ -1,24 +1,24 @@
 .main-container {
-    display: flex;
-    flex-direction: column;
-    height: 90rem;
-    width: 90%rem
-    ;
+display: flex;
+flex-direction: column;
+height: 90rem;
+width: 90%rem
+;
 }
 
 .row {
-    display: flex;
+display: flex;
 }
 
 .grid-square {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+width: 30px;
+height: 30px;
+border: 1px solid #ccc;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 .village {
-    background-color: #ddd;
+background-color: #ddd;
 }
