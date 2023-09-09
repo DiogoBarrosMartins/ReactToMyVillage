@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { upgradeBuildingApi, trainTroops, TroopTypeDTO  } from '../api/villageApi';
+import { upgradeBuildingApi, trainTroops, TroopTypeDTO, fetchAvailableTroops   } from '../api/villageApi';
 import { useVillageData } from '../api/VillageDataContext';
 import  TroopInfo  from './TroopInfo'; // Import the TroopInfo component
+import { TroopType } from './TroopInfo';
 
 export interface Building {
 id: number;
@@ -38,13 +39,28 @@ onClose,
 setUpgradeQueue,
 upgradeQueue,
 onUpgradeSuccess,
-constructions,troopTypes
+constructions
 ,}) => {
 const villageDataContext = useVillageData();
 const villageData = villageDataContext?.villageData;
-const [selectedTroopType, setSelectedTroopType] = useState<string>('');
 const [troopQuantity, setTroopQuantity] = useState<number>(0);
 const [availableTroopTypes, setAvailableTroopTypes] = useState<string[]>([]);
+const [troopTypes, setTroopTypes] = useState<TroopType[]>([]);
+const [selectedTroop, setSelectedTroop] = useState<TroopType | null>(null);
+
+
+useEffect(() => {
+    const fetchTroops = async () => {
+      try {
+        const troops = await fetchAvailableTroops(building.id);
+        setTroopTypes(troops);
+      } catch (error) {
+        console.error('Failed to fetch available troops:', error);
+      }
+    };
+
+    fetchTroops();
+  }, [building.id]);
 
 
 
@@ -63,10 +79,10 @@ const buildingDescriptions: { [key: string]: string } = {
 };
 
 
-
 const isBuildingUpgrading = (): boolean => {
 return constructions.some((construction: any) => construction.buildingId === building.id);
 };
+
 
 const handleBuildingUpgrade = async () => {
 try {
@@ -85,8 +101,8 @@ try {
 
 const handleTrainTroops = async () => {
 try {
-    if (selectedTroopType && troopQuantity > 0) {
-    const response = await trainTroops(villageData.id, selectedTroopType, troopQuantity);
+    if (selectedTroop && troopQuantity > 0) {
+    const response = await trainTroops(villageData.id, selectedTroop.name, troopQuantity);
     if (response.status === 200) {
         alert('Troop queue complete');
         window.location.reload();
@@ -102,90 +118,98 @@ try {
 };
 
 return (
-<div
-    style={{
-    zIndex: 10,
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: 'white',
-    padding: '16px',
-    border: '1px solid black',
-    }}
->
-    <h4>{building.type}</h4>
-    <p>{buildingDescriptions[building.type]}</p>
-
-    {(building.type === 'FARM' ||
-    building.type === 'QUARRY' ||
-    building.type === 'MINE' ||
-    building.type === 'FOREST') && (
-    <>
-        <p>Current Production Rate: {building.productionRate}</p>
-        <p>Next Level Production Rate: {building.nextLevelProductionRate}</p>
-    </>
-    )}
-
-    <p>Level: {building.level}</p>
-    <p>Upgrade Cost:</p>
-    <ul className="no-bullets">
-    {building.resourcesNeeded.map((amount: number, index: number) => {
-        let resourceType;
-        switch (index) {
-        case 0:
-            resourceType = 'Wood';
-            break;
-        case 1:
-            resourceType = 'Wheat';
-            break;
-        case 2:
-            resourceType = 'Stone';
-            break;
-        case 3:
-            resourceType = 'Gold';
-            break;
-        default:
-            resourceType = 'Unknown';
-        }
-        return <li key={index}>{resourceType}: {amount}</li>;
-    })}
-    </ul>
+    <div
+      style={{
+        zIndex: 10,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: 'white',
+        padding: '16px',
+        border: '1px solid black',
+      }}
+    >
+      <h4>{building.type}</h4>
+      <p>{buildingDescriptions[building.type]}</p>
+  
+      {(building.type === 'FARM' ||
+        building.type === 'QUARRY' ||
+        building.type === 'MINE' ||
+        building.type === 'FOREST') && (
+        <>
+          <p>Current Production Rate: {building.productionRate}</p>
+          <p>Next Level Production Rate: {building.nextLevelProductionRate}</p>
+        </>
+      )}
+  
+      <p>Level: {building.level}</p>
+      <p>Upgrade Cost:</p>
+      <ul className="no-bullets">
+        {building.resourcesNeeded.map((amount: number, index: number) => {
+          let resourceType;
+          switch (index) {
+            case 0:
+              resourceType = 'Wood';
+              break;
+            case 1:
+              resourceType = 'Wheat';
+              break;
+            case 2:
+              resourceType = 'Stone';
+              break;
+            case 3:
+              resourceType = 'Gold';
+              break;
+            default:
+              resourceType = 'Unknown';
+          }
+          return <li key={index}>{resourceType}: {amount}</li>;
+        })}
+       </ul>
     <button onClick={onClose}>Close</button>
     <button
-    onClick={handleBuildingUpgrade}
-    disabled={isBuildingUpgrading()}
+      onClick={handleBuildingUpgrade}
+      disabled={isBuildingUpgrading()}
     >
-    {isBuildingUpgrading() ? 'Already Upgrading' : 'Upgrade'}
+      {isBuildingUpgrading() ? 'Already Upgrading' : 'Upgrade'}
     </button>
-
-    {availableTroopTypes.length > 0 && (
-    <div className="troop-production">
-    <select
-        value={selectedTroopType}
-        onChange={(e) => setSelectedTroopType(e.target.value)}
-    >
-        <option value="">Select Troop Type</option>
-        {availableTroopTypes.map((troopType) => (
-        <option key={troopType} value={troopType}>
-            {troopType}
-        </option>
-        ))}
-    </select>
-    <input
-        type="number"
-        value={troopQuantity}
-        onChange={(e) => setTroopQuantity(Number(e.target.value))}
-        placeholder="Quantity"
-    />
-    <button onClick={handleTrainTroops}>Train Troops</button>
+    
+    {/* "Train Troops" section */}
+    <div className="training-section">
+      <h3>Train Troops</h3>
+      <div className="troop-selection">
+        {/* Dropdown for selecting troop types */}
+        <label htmlFor="troopSelect">Select Troop Type:</label>
+        <select
+          id="troopSelect"
+          value={selectedTroop ? selectedTroop.name : ''}
+          onChange={(e) =>
+            setSelectedTroop(e.target.value as unknown as TroopType)
+          }
+        >
+                  <option value="" disabled>
+            Select troop
+          </option>
+          {troopTypes.map((troop, index) => (
+            <option key={index} value={troop.name}>
+              {troop.name}
+            </option>
+          ))}
+        </select>
+        {/* Input for specifying the number of troops */}
+        <label htmlFor="troopQuantity">Quantity:</label>
+        <input
+          id="troopQuantity"
+          type="number"
+          min="1"
+          value={troopQuantity}
+          onChange={(e) => setTroopQuantity(Number(e.target.value))}
+        />
+        <button onClick={handleTrainTroops}>Train</button>
+      </div>
+      {/* Render the TroopInfo component here */}
+      <TroopInfo building={building} selectedTroop={selectedTroop} />
     </div>
-)}
-
-{/* Render the TroopInfo component here */}
-<TroopInfo />
-</div>
-);
-};
-
-export default BuildingDetails;
+  </div>);}
+  export default BuildingDetails;

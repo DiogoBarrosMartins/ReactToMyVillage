@@ -98,7 +98,8 @@ try {
 
 export const trainTroops = async (villageId: string, troopType: string, quantity: number) => {
 
-const response = await fetch(`http://localhost:8080/villages/${villageId}/troops/train`, {
+const response = await fetch(`http://localhost:8080/troops/train/${villageId}`, {
+  
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -128,9 +129,9 @@ description: string;
 }
 
 
-export const fetchAllTroopTypes = async (): Promise<TroopTypeDTO[]> => {
+export const fetchAllTroopTypes = async (buildingId: number): Promise<TroopTypeDTO[]> => {
 try {
-    const response = await fetch('http://localhost:8080/villages/1/troops/list', {
+    const response = await fetch(`http://localhost:8080/troops/${buildingId}/list`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
@@ -147,3 +148,20 @@ try {
     throw error;
 }
 };
+
+export const fetchAvailableTroops = async (buildingId:number) => {
+    try {
+        console.log(buildingId+"!!!!!!!!");
+      const response = await fetch(`http://localhost:8080/troops/${buildingId}/list`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch troops:", error);
+      throw error;
+    }
+  };
+
+  
