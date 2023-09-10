@@ -47,7 +47,9 @@ const [troopQuantity, setTroopQuantity] = useState<number>(0);
 const [availableTroopTypes, setAvailableTroopTypes] = useState<string[]>([]);
 const [troopTypes, setTroopTypes] = useState<TroopType[]>([]);
 const [selectedTroop, setSelectedTroop] = useState<TroopType | null>(null);
-
+useEffect(() => {
+  console.log('BuildingDetailsProps rendered');
+}, []);
 
 useEffect(() => {
     const fetchTroops = async () => {
@@ -117,56 +119,58 @@ try {
 }
 };
 
+
+
 return (
-    <div
-      style={{
-        zIndex: 10,
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: 'white',
-        padding: '16px',
-        border: '1px solid black',
-      }}
-    >
-      <h4>{building.type}</h4>
-      <p>{buildingDescriptions[building.type]}</p>
-  
-      {(building.type === 'FARM' ||
-        building.type === 'QUARRY' ||
-        building.type === 'MINE' ||
-        building.type === 'FOREST') && (
-        <>
-          <p>Current Production Rate: {building.productionRate}</p>
-          <p>Next Level Production Rate: {building.nextLevelProductionRate}</p>
-        </>
-      )}
-  
-      <p>Level: {building.level}</p>
-      <p>Upgrade Cost:</p>
-      <ul className="no-bullets">
-        {building.resourcesNeeded.map((amount: number, index: number) => {
-          let resourceType;
-          switch (index) {
-            case 0:
-              resourceType = 'Wood';
-              break;
-            case 1:
-              resourceType = 'Wheat';
-              break;
-            case 2:
-              resourceType = 'Stone';
-              break;
-            case 3:
-              resourceType = 'Gold';
-              break;
-            default:
-              resourceType = 'Unknown';
-          }
-          return <li key={index}>{resourceType}: {amount}</li>;
-        })}
-       </ul>
+  <div
+    style={{
+      zIndex: 10,
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: 'white',
+      padding: '16px',
+      border: '1px solid black',
+    }}
+  >
+    <h4>{building.type}</h4>
+    <p>{buildingDescriptions[building.type]}</p>
+
+    {(building.type === 'FARM' ||
+      building.type === 'QUARRY' ||
+      building.type === 'MINE' ||
+      building.type === 'FOREST') && (
+      <>
+        <p>Current Production Rate: {building.productionRate}</p>
+        <p>Next Level Production Rate: {building.nextLevelProductionRate}</p>
+      </>
+    )}
+
+    <p>Level: {building.level}</p>
+    <p>Upgrade Cost:</p>
+    <ul className="no-bullets">
+      {building.resourcesNeeded.map((amount: number, index: number) => {
+        let resourceType;
+        switch (index) {
+          case 0:
+            resourceType = 'Wood';
+            break;
+          case 1:
+            resourceType = 'Wheat';
+            break;
+          case 2:
+            resourceType = 'Stone';
+            break;
+          case 3:
+            resourceType = 'Gold';
+            break;
+          default:
+            resourceType = 'Unknown';
+        }
+        return <li key={index}>{resourceType}: {amount}</li>;
+      })}
+    </ul>
     <button onClick={onClose}>Close</button>
     <button
       onClick={handleBuildingUpgrade}
@@ -174,42 +178,38 @@ return (
     >
       {isBuildingUpgrading() ? 'Already Upgrading' : 'Upgrade'}
     </button>
-    
-    {/* "Train Troops" section */}
-    <div className="training-section">
-      <h3>Train Troops</h3>
-      <div className="troop-selection">
-        {/* Dropdown for selecting troop types */}
-        <label htmlFor="troopSelect">Select Troop Type:</label>
-        <select
-          id="troopSelect"
-          value={selectedTroop ? selectedTroop.name : ''}
-          onChange={(e) =>
-            setSelectedTroop(e.target.value as unknown as TroopType)
-          }
-        >
-                  <option value="" disabled>
-            Select troop
-          </option>
-          {troopTypes.map((troop, index) => (
-            <option key={index} value={troop.name}>
-              {troop.name}
-            </option>
-          ))}
-        </select>
-        {/* Input for specifying the number of troops */}
-        <label htmlFor="troopQuantity">Quantity:</label>
-        <input
-          id="troopQuantity"
-          type="number"
-          min="1"
-          value={troopQuantity}
-          onChange={(e) => setTroopQuantity(Number(e.target.value))}
-        />
-        <button onClick={handleTrainTroops}>Train</button>
-      </div>
-      {/* Render the TroopInfo component here */}
-      <TroopInfo building={building} selectedTroop={selectedTroop} />
-    </div>
-  </div>);}
+
+    {(["barracks", "stable", "archery_range", "siege_workshop"].includes(building.type.toLowerCase())) && (
+      <>
+        <div className="training-section">
+          <h3>Train Troops</h3>
+          <div className="troop-selection">
+            <label htmlFor="troopSelect">Select Troop Type:</label>
+            <select
+              id="troopSelect"
+              value={selectedTroop ? selectedTroop.name : ''}
+              onChange={(e) => setSelectedTroop(e.target.value as unknown as TroopType)}
+            >
+              <option value="" disabled>Select troop</option>
+              {troopTypes.map((troop, index) => (
+                <option key={index} value={troop.name}>{troop.name}</option>
+              ))}
+            </select>
+            <label htmlFor="troopQuantity">Quantity:</label>
+            <input
+              id="troopQuantity"
+              type="number"
+              min="1"
+              value={troopQuantity}
+              onChange={(e) =>  setSelectedTroop(e.target.value as unknown as TroopType)}
+            />
+            <button onClick={handleTrainTroops}>Train</button>
+          </div>
+        </div>
+        {selectedTroop && <TroopInfo building={building} selectedTroop={selectedTroop} key={selectedTroop.name}/>} {/* Re-render TroopInfo when the selected troop changes */}
+      </>
+    )}
+  </div>
+);
+}
   export default BuildingDetails;

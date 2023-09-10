@@ -21,9 +21,16 @@ const TroopInfo: React.FC<TroopInfoProps> = ({ building }) => {
   const [troopTypes, setTroopTypes] = useState<TroopType[]>([]);
   const [selectedTroop, setSelectedTroop] = useState<string | null>(null);
   const [troopInfo, setTroopInfo] = useState<TroopType | null>(null);
+  
+  
+  useEffect(() => {
+    console.log('TroopInfo rendered');
+  }, []);
+
 
   useEffect(() => {
-    const fetchData = async () => {
+   
+   const fetchData = async () => {
       try {
         const data = await fetchAvailableTroops(building.id);
         setTroopTypes(data);
@@ -44,17 +51,7 @@ const TroopInfo: React.FC<TroopInfoProps> = ({ building }) => {
 
   return (
     <div>
-      <select
-        value={selectedTroop || ''}
-        onChange={(e) => setSelectedTroop(e.target.value)}
-      >
-        {troopTypes.map((troop, index) => (
-          <option key={index} value={troop.name}>
-            {troop.name}
-          </option>
-        ))}
-      </select>
-      {troopInfo && (
+       {troopInfo && (
         <div>
           <h3>{troopInfo.name}</h3>
           <p>Health: {troopInfo.health}</p>
