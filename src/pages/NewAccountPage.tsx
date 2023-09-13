@@ -63,8 +63,7 @@ return (
 
     </form>
     
-</div>)
-
-                }
+</div>
+)};
 
 export default NewAccount;

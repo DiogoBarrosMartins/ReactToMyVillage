@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import { upgradeBuildingApi, trainTroops, TroopTypeDTO, fetchAvailableTroops   } from '../api/villageApi';
 import { useVillageData } from '../api/VillageDataContext';
-import  TroopInfo  from './TroopInfo'; // Import the TroopInfo component
+import  TroopInfo  from './TroopInfo'; 
 import { TroopType } from './TroopInfo';
+import { error } from 'console';
 
 export interface Building {
 id: number;
@@ -36,15 +37,12 @@ villageId: number;
 const BuildingDetails: React.FC<BuildingDetailsProps> = ({
 building,
 onClose,
-setUpgradeQueue,
-upgradeQueue,
 onUpgradeSuccess,
 constructions
 ,}) => {
 const villageDataContext = useVillageData();
 const villageData = villageDataContext?.villageData;
-const [troopQuantity, setTroopQuantity] = useState<number>(0);
-const [availableTroopTypes, setAvailableTroopTypes] = useState<string[]>([]);
+const [troopQuantity] = useState<number>(0);
 const [troopTypes, setTroopTypes] = useState<TroopType[]>([]);
 const [selectedTroop, setSelectedTroop] = useState<TroopType | null>(null);
 useEffect(() => {
@@ -109,13 +107,11 @@ try {
         alert('Troop queue complete');
         window.location.reload();
     } else {
-        // Handle errors (e.g., show an error message)
+       alert(error);
     }
-    } else {
-    // Handle invalid input (e.g., show an error message)
-    }
+    } 
 } catch (error) {
-    // Handle errors (e.g., show an error message)
+   alert(error);
 }
 };
 
@@ -206,7 +202,7 @@ return (
             <button onClick={handleTrainTroops}>Train</button>
           </div>
         </div>
-        {selectedTroop && <TroopInfo building={building} selectedTroop={selectedTroop} key={selectedTroop.name}/>} {/* Re-render TroopInfo when the selected troop changes */}
+        {selectedTroop && <TroopInfo building={building} selectedTroop={selectedTroop} key={selectedTroop.name}/>} 
       </>
     )}
   </div>

@@ -41,14 +41,14 @@ return `${String(diffHrs).padStart(2, '0')}:${String(diffMins).padStart(2, '0')}
 
 
 useEffect(() => {
-// Update the next troop's end time when villageData changes
+
 if (villageData?.troopTrainingQueueDTOS) {
     const sortedQueue = [...villageData.troopTrainingQueueDTOS].sort((a, b) => new Date(a.trainingEndTime).getTime() - new Date(b.trainingEndTime).getTime());
 
-    if (sortedQueue.length > 0) {  // Check if the array has elements
+    if (sortedQueue.length > 0) {  
         setNextTroopEndTime(new Date(sortedQueue[0].trainingEndTime));
     } else {
-        setNextTroopEndTime(null);  // Or some other default value
+        setNextTroopEndTime(null); 
     }
 }
 }, [villageData]);
@@ -63,12 +63,12 @@ if (nextTroopEndTime) {
             clearInterval(interval);
             setNextTroopEndTime(null);
 
-            // Trigger a refresh
+           
         window.location.reload();
         }
     }, 1000);
 
-    return () => clearInterval(interval);  // Cleanup
+    return () => clearInterval(interval);  
 }
 }, [nextTroopEndTime]);
 
@@ -95,23 +95,23 @@ navigate("/map");
 
 
 const handleLogout = () => {
-// Remove the object from local storage
-localStorage.removeItem('username');  // Replace 'yourObjectName' with the actual key name you used to store the object
 
-// Navigate to the landing page
-window.location.href = '/';  // Assuming '/' is your landing page route or you can use the exact URL of your landing page.
+localStorage.removeItem('username'); 
+
+
+window.location.href = '/';  
 };
 
 useEffect(() => {
 const interval = setInterval(() => {
 const newTimers: { [buildingId: number]: string } = {};
 
-villageData?.constructionDTOS.forEach((construction: { endsAt:  Date; buildingId: number; }) => {   // <-- 2. Access the constructionDTOS from the context
+villageData?.constructionDTOS.forEach((construction: { endsAt:  Date; buildingId: number; }) => { 
     const endTime = new Date(construction.endsAt).getTime();
     const now = new Date().getTime();
     const distance = endTime - now;
 
-    // Calculate the remaining time
+
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
     newTimers[construction.buildingId] = `${minutes}m ${seconds}s`;
@@ -123,7 +123,7 @@ villageData?.constructionDTOS.forEach((construction: { endsAt:  Date; buildingId
 setTimers(newTimers);
 }, 1000);
 
-return () => clearInterval(interval);  // This will clear the interval when the component is unmounted.
+return () => clearInterval(interval);  
 }, [villageData?.constructionDTOS]);
 
 
@@ -211,7 +211,7 @@ buildings: any[];
 }
 
 const ResourceSection: React.FC<ResourceProps> = ({ resourcesDTO, buildings }) => {
-// Calculate the total production per minute for each resource
+
 let woodProduction = 0;
 let wheatProduction = 0;
 let stoneProduction = 0;
@@ -304,7 +304,7 @@ handleNameChange={handleNameChange}
 
             onClose={handleCloseBuildingDetails}
             onUpgradeSuccess={() => {
-                //additional logic when upgrade is sucessful
+        
             } }
             setUpgradeQueue={setUpgradeQueue}
             upgradeQueue={upgradeQueue} troopTypes={[]}/>
