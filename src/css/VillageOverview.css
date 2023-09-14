@@ -89,3 +89,16 @@ color: var(--primary-color);
 transform: scale(1.02);
 box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
+
+.buildingDetailsWrapper {
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 16px;
+    border: 1px solid black;
+  }
+  
+ 
