@@ -4,7 +4,7 @@ import { upgradeBuildingApi, trainTroops, TroopTypeDTO, fetchAvailableTroops   }
 import { useVillageData } from '../api/VillageDataContext';
 import  TroopInfo  from './TroopInfo'; 
 import { TroopType } from './TroopInfo';
-import { error } from 'console';
+
 
 export interface Building {
 id: number;
@@ -62,9 +62,6 @@ const villageData = villageDataContext?.villageData;
 const [troopQuantity] = useState<number>(0);
 const [troopTypes, setTroopTypes] = useState<TroopType[]>([]);
 const [selectedTroop, setSelectedTroop] = useState<TroopType | null>(null);
-useEffect(() => {
-  console.log('BuildingDetailsProps rendered');
-}, []);
 
 useEffect(() => {
     const fetchTroops = async () => {
@@ -109,7 +106,7 @@ try {
         alert('Troop queue complete');
         window.location.reload();
     } else {
-       alert(error);
+       alert(Error);
     }
     } 
 } catch (error) {
