@@ -34,7 +34,6 @@ const TroopInfo: React.FC<TroopInfoProps> = ({ building }) => {
       try {
         const data = await fetchAvailableTroops(building.id);
         setTroopTypes(data);
-        // Automatically selects the first troop type
         setSelectedTroop(data[0]?.name || null); 
       } catch (error) {
         console.error('Failed to fetch troops:', error);
