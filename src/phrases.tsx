@@ -10,7 +10,7 @@ const phrases = {
     8: "I have not failed. I've just found 10,000 ways that won't work.",
     9: "It does not matter how slowly you go as long as you do not stop.",
     10: "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.",
-   
+   12: "Day is never finished, master got me working. Some day master set me free."
    11: "The journey of the 10,000 ranks starts a single goal." // Add more phrases as needed
   };
   
