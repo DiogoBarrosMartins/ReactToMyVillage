@@ -11,8 +11,9 @@ const phrases = {
     9: "It does not matter how slowly you go as long as you do not stop.",
     10: "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.",
    11: "Day is never finished, master got me working. Some day master set me free.",
-   12: "The journey of the 10,000 ranks starts a single goal." // Add more phrases as needed
-  };
+   12: "The journey of the 10,000 ranks starts a single goal.", // Add more phrases as needed
+13:"Remember to drink water and exercise!"  
+};
   
   export default phrases;
   
