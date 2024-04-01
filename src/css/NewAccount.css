@@ -1,6 +1,4 @@
-/* NewAccount.css */
 
-/* Base styles */
 .new-account-page {
 display: flex;
 flex-direction: column;
@@ -13,7 +11,7 @@ padding: 20px;
 .button-container {
 display: flex;
 justify-content: center;
-gap: 10px; /* space between the buttons */
+gap: 10px; 
 margin-top: 20px;
 }
 .new-account-page h1 {
@@ -45,7 +43,7 @@ max-width: 800px;
 }
 
 .tribe-card {
-flex: 1 1 calc(33.33% - 20px); /* three cards with gap */
+flex: 1 1 calc(33.33% - 20px);
 padding: 15px;
 border: 1px solid #ccc;
 border-radius: 8px;

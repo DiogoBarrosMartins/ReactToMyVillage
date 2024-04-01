@@ -6,9 +6,8 @@ interface AccountDetails {
 }
 
 export async function createNewAccount(accountDetails: AccountDetails) {
-  console.log("Creating new account with details: ", accountDetails);  // Log the account details
+  console.log("Creating new account with details: ", accountDetails); 
 
-  // Set your API URL here
   const response = await fetch('http://localhost:8080/accounts', {
     method: 'POST',
     headers: {
